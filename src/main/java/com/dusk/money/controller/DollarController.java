@@ -1,6 +1,5 @@
 package com.dusk.money.controller;
 
-import com.dusk.money.dto.response.DollarTodayDto;
 import com.dusk.money.dto.response.MoneyResponse;
 import com.dusk.money.scraping.model.Price;
 import com.dusk.money.service.DollarService;
@@ -36,7 +35,7 @@ public class DollarController {
                     example = "{\"code\": 500, \"message\": \"error intern\"}"))),
     })
     @GetMapping
-    public MoneyResponse<DollarTodayDto> getDollarPrices() {
+    public MoneyResponse<List<Price>> getDollarPrices() {
         return this.dollarService.getDollarPrices();
     }
 }

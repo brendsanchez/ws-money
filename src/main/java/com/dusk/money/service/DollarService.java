@@ -1,8 +1,10 @@
 package com.dusk.money.service;
 
-import com.dusk.money.dto.response.DollarTodayDto;
 import com.dusk.money.dto.response.MoneyResponse;
+import com.dusk.money.scraping.model.Price;
+
+import java.util.List;
 
 public interface DollarService {
-    MoneyResponse<DollarTodayDto> getDollarPrices();
+    MoneyResponse<List<Price>> getDollarPrices();
 }
