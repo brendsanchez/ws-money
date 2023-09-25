@@ -10,7 +10,7 @@ public abstract class MoneyException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
-    public HttpStatus getHttpStatus(){
+    public HttpStatus getHttpStatus() {
         return this.httpStatus;
     }
 }
