@@ -22,6 +22,10 @@ public class DollarFactory {
         if (Web.DOLAR_HOY.equals(web)) {
             return dolarHoy;
         }
+
+        if (Web.DOLARITO.equals(web)) {
+            return dolarito;
+        }
         return dolarito;
     }
 }

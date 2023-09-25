@@ -21,7 +21,7 @@ public class Dolarito implements Dollar {
     }
 
     @Override
-    public Element element() {
+    public String lastUpdated() {
         return null;
     }
 }

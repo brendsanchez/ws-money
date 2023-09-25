@@ -9,5 +9,5 @@ public interface Dollar {
 
     List<Price> prices();
 
-    Element element();
+    String lastUpdated();
 }

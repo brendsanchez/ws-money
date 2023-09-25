@@ -43,12 +43,9 @@ public class MoneyExceptionHandler {
         return ResponseEntity.status(moneyException.httpStatus).body(moneyResponse);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public MoneyResponse<Void> createAccountsException(Exception ex) {
+    public void unknownException(Exception ex) {
         logger.error(ex.getMessage());
-        return new MoneyResponse<>(HttpURLConnection.HTTP_INTERNAL_ERROR,
-                "error intern",
-                null);
     }
 }

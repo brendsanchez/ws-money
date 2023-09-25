@@ -1,5 +1,6 @@
 package com.dusk.money.service.imp;
 
+import com.dusk.money.dto.response.DollarTodayDto;
 import com.dusk.money.dto.response.MoneyResponse;
 import com.dusk.money.enums.Code;
 import com.dusk.money.enums.Web;
@@ -29,14 +30,17 @@ public class DollarServiceImpl implements DollarService {
 
     private final Logger logger = LoggerFactory.getLogger(DollarServiceImpl.class);
 
-    public MoneyResponse<List<Price>> getDollarPrices() {
+    public MoneyResponse<DollarTodayDto> getDollarPrices() {
         Dollar dollar = this.dollarFactory.getDollar(Web.DOLAR_HOY);
 
         List<Price> prices = dollar.prices();
         logger.debug("prices found:{}", prices.size());
 
+        String lastUpdated = dollar.lastUpdated();
+
+        DollarTodayDto dollarTodayDto = new DollarTodayDto(lastUpdated, prices);
         return new MoneyResponse<>(HttpURLConnection.HTTP_OK,
                 Code.SUCCESS.name().toLowerCase(Locale.ROOT),
-                prices);
+                dollarTodayDto);
     }
 }
