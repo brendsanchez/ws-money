@@ -1,9 +1,11 @@
 package com.dusk.money.scraping;
 
 import com.dusk.money.enums.Web;
+import com.dusk.money.exception.GenericMoneyException;
 import com.dusk.money.scraping.dolarhoy.DolarHoy;
 import com.dusk.money.scraping.dolarito.Dolarito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,6 +28,7 @@ public class DollarFactory {
         if (Web.DOLARITO.equals(web)) {
             return dolarito;
         }
-        return dolarito;
+
+        throw new GenericMoneyException("not valid web factory option", HttpStatus.EXPECTATION_FAILED);
     }
 }

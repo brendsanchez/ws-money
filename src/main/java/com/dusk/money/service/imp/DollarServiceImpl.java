@@ -29,8 +29,8 @@ public class DollarServiceImpl implements DollarService {
 
     private final Logger logger = LoggerFactory.getLogger(DollarServiceImpl.class);
 
-    public MoneyResponse<List<Price>> getDollarPrices() {
-        Dollar dollar = this.dollarFactory.getDollar(Web.DOLAR_HOY);
+    public MoneyResponse<List<Price>> getDollarPrices(Web web) {
+        Dollar dollar = this.dollarFactory.getDollar(web);
 
         List<Price> prices = dollar.prices();
         logger.debug("prices found:{}", prices.size());

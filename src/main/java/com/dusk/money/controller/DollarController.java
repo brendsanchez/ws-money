@@ -1,6 +1,7 @@
 package com.dusk.money.controller;
 
 import com.dusk.money.dto.response.MoneyResponse;
+import com.dusk.money.enums.Web;
 import com.dusk.money.scraping.model.Price;
 import com.dusk.money.service.DollarService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class DollarController {
                     example = "{\"code\": 500, \"message\": \"error intern\"}"))),
     })
     @GetMapping
-    public MoneyResponse<List<Price>> getDollarPrices() {
-        return this.dollarService.getDollarPrices();
+    public MoneyResponse<List<Price>> getDollarPrices(@RequestParam("web") final Web web) {
+        return this.dollarService.getDollarPrices(web);
     }
 }
