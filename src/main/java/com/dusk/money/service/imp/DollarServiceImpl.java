@@ -5,7 +5,7 @@ import com.dusk.money.enums.Code;
 import com.dusk.money.enums.Web;
 import com.dusk.money.scraping.Dollar;
 import com.dusk.money.scraping.DollarFactory;
-import com.dusk.money.scraping.model.Price;
+import com.dusk.money.dto.Price;
 import com.dusk.money.service.DollarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

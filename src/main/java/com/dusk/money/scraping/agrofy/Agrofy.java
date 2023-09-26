@@ -1,4 +1,4 @@
-package com.dusk.money.scraping.dolarito;
+package com.dusk.money.scraping.agrofy;
 
 import com.dusk.money.scraping.Dollar;
 import com.dusk.money.dto.Price;
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Dolarito implements Dollar {
+public class Agrofy implements Dollar {
 
-    @Value("${url.dolarito}")
+    @Value("${url.agrofy}")
     private String route;
 
     @Override
@@ -25,8 +25,8 @@ public class Dolarito implements Dollar {
 
     private Element element() {
         Document document = UtilMoney.getFromUri(route);
-        Element firstDiv = document.getElementsByClass("tile dolar").getFirst();
-        Assert.notNull(firstDiv, "don't found title dolar class");
-        return firstDiv;
+        Element firstBody = document.getElementsByTag("table.table-agrofy.table tbody").getFirst();
+        Assert.notNull(firstBody, "don't found table agrofy");
+        return firstBody;
     }
 }

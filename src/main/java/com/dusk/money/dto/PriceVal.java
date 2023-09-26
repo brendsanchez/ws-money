@@ -1,4 +1,4 @@
-package com.dusk.money.scraping.model;
+package com.dusk.money.dto;
 
 import java.math.BigDecimal;
 

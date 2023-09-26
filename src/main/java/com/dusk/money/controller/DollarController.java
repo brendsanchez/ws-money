@@ -2,7 +2,7 @@ package com.dusk.money.controller;
 
 import com.dusk.money.dto.response.MoneyResponse;
 import com.dusk.money.enums.Web;
-import com.dusk.money.scraping.model.Price;
+import com.dusk.money.dto.Price;
 import com.dusk.money.service.DollarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

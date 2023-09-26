@@ -2,8 +2,8 @@ package com.dusk.money.scraping.dolarhoy;
 
 import com.dusk.money.enums.SpecialCharacter;
 import com.dusk.money.scraping.Dollar;
-import com.dusk.money.scraping.model.Price;
-import com.dusk.money.scraping.model.PriceVal;
+import com.dusk.money.dto.Price;
+import com.dusk.money.dto.PriceVal;
 import com.dusk.money.utils.UtilMoney;
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.nodes.Document;
