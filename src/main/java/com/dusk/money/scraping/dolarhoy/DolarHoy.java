@@ -1,9 +1,10 @@
 package com.dusk.money.scraping.dolarhoy;
 
-import com.dusk.money.enums.SpecialCharacter;
-import com.dusk.money.scraping.Dollar;
 import com.dusk.money.dto.Price;
 import com.dusk.money.dto.PriceVal;
+import com.dusk.money.enums.SpecialCharacter;
+import com.dusk.money.scraping.Dollar;
+import com.dusk.money.scraping.DollarElement;
 import com.dusk.money.utils.UtilMoney;
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.nodes.Document;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class DolarHoy implements Dollar {
+public class DolarHoy implements Dollar, DollarElement {
 
     @Value("${url.dolarhoy}")
     private String route;
@@ -41,6 +42,14 @@ public class DolarHoy implements Dollar {
             prices.add(price);
         }
         return prices;
+    }
+
+    @Override
+    public Element element() {
+        Document document = UtilMoney.getFromUri(route);
+        Element firstDiv = document.getElementsByClass("tile dolar").getFirst();
+        Assert.notNull(firstDiv, "don't found title dolar class");
+        return firstDiv;
     }
 
     public String lastUpdated() {
@@ -79,13 +88,6 @@ public class DolarHoy implements Dollar {
         String valText = SpecialCharacter.MONEY.getCharacter() + priceText;
         BigDecimal val = new BigDecimal(priceText);
         return new PriceVal(valText, val);
-    }
-
-    private Element element() {
-        Document document = UtilMoney.getFromUri(route);
-        Element firstDiv = document.getElementsByClass("tile dolar").getFirst();
-        Assert.notNull(firstDiv, "don't found title dolar class");
-        return firstDiv;
     }
 
     private String getPriceFromText(String text) {
