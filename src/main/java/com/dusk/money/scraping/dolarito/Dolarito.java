@@ -48,7 +48,6 @@ public class Dolarito implements Dollar, DollarElement {
         return new Price(
                 index,
                 jsonObject.optString("name"),
-                null,
                 this.getPriceValJson(jsonObject.optString("buy")),
                 this.getPriceValJson(jsonObject.optString("sell")),
                 jsonObject.optString("variation"),

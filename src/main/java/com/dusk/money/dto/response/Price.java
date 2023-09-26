@@ -9,7 +9,6 @@ import java.util.Date;
 public record Price(
         int id,
         String name,
-        String lastUpdated,
         PriceVal priceBuy,
         PriceVal priceSell,
         String variation,
@@ -17,6 +16,6 @@ public record Price(
         Date timestamp,
         String spread) {
     public Price(int id, String name, PriceVal priceBuy, PriceVal priceSell, Date timestamp) {
-        this(id, name, null, priceBuy, priceSell, null, null, timestamp, null);
+        this(id, name, priceBuy, priceSell, null, null, timestamp, null);
     }
 }
