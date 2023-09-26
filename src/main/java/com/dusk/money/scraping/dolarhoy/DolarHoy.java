@@ -3,6 +3,7 @@ package com.dusk.money.scraping.dolarhoy;
 import com.dusk.money.dto.PriceVal;
 import com.dusk.money.dto.response.Price;
 import com.dusk.money.enums.SpecialCharacter;
+import com.dusk.money.exception.GenericMoneyException;
 import com.dusk.money.scraping.Dollar;
 import com.dusk.money.scraping.DollarElement;
 import com.dusk.money.utils.UtilMoney;
@@ -11,14 +12,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class DolarHoy implements Dollar, DollarElement {
+    private final SimpleDateFormat formatPage = new SimpleDateFormat("dd/MM/yy hh:mm a", Locale.ROOT);
+    private Date lastUpdated;
 
     @Value("${url.dolarhoy}")
     private String route;
@@ -28,9 +36,9 @@ public class DolarHoy implements Dollar, DollarElement {
         Element pricesElement = this.element().select("div.tile.is-parent.is-7.is-vertical").getFirst();
         Assert.notNull(pricesElement, "don't found the rest dollars");
 
-        Elements children = pricesElement.children();
-        String lastUpdated = this.lastUpdated();
+        lastUpdated = this.lastUpdated();
 
+        Elements children = pricesElement.children();
         List<Price> prices = new ArrayList<>();
         int cant = UtilMoney.CANT_INIT;
         for (Element child : children) {
@@ -38,7 +46,7 @@ public class DolarHoy implements Dollar, DollarElement {
                 continue;
             }
 
-            Price price = this.getPriceFromChildWithUpdated(cant, child, lastUpdated);
+            Price price = this.getPriceFromChildWithUpdated(cant, child);
             prices.add(price);
             cant++;
         }
@@ -53,22 +61,31 @@ public class DolarHoy implements Dollar, DollarElement {
         return firstDiv;
     }
 
-    public String lastUpdated() {
+    public Date lastUpdated() {
         Element lastUpdatedElement = this.element().select("div.tile.update span").getFirst();
         Assert.notNull(lastUpdatedElement, "don't found updated element");
 
-        return this.replaceUpdated(lastUpdatedElement.text());
+        String lastUpdatedText = this.replaceUpdated(lastUpdatedElement.text());
+        if (lastUpdatedText.isEmpty()) {
+            return null;
+        }
+
+        try { //todo esta devolviendo +3
+            return formatPage.parse(lastUpdatedText);
+        } catch (ParseException ex) {
+            throw new GenericMoneyException(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private boolean nonValidChild(Element child) {
         return child.children().isEmpty() || child.children().size() < 2;
     }
 
-    private Price getPriceFromChildWithUpdated(int index, Element element, String lastUpdated) {
+    private Price getPriceFromChildWithUpdated(int index, Element element) {
         String name = element.child(0).text();
         Elements priceElement = element.child(1).children();
         List<PriceVal> priceValues = this.priceValues(priceElement);
-        return new Price(index, name, lastUpdated, priceValues.getFirst(), priceValues.getLast());
+        return new Price(index, name, priceValues.getFirst(), priceValues.getLast(), this.lastUpdated);
     }
 
     private List<PriceVal> priceValues(Elements valChildren) {

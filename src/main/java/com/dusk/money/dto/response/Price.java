@@ -7,7 +7,7 @@ import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record Price(
-        int index,
+        int id,
         String name,
         String lastUpdated,
         PriceVal priceBuy,
@@ -16,7 +16,7 @@ public record Price(
         String volume,
         Date timestamp,
         String spread) {
-    public Price(int index, String name, String lastUpdated, PriceVal priceBuy, PriceVal priceSell) {
-        this(index, name, lastUpdated, priceBuy, priceSell, null, null, null, null);
+    public Price(int id, String name, PriceVal priceBuy, PriceVal priceSell, Date timestamp) {
+        this(id, name, null, priceBuy, priceSell, null, null, timestamp, null);
     }
 }
