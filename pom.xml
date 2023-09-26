@@ -21,6 +21,7 @@
         <springdoc.version>2.2.0</springdoc.version>
         <logback.encoder.version>6.6</logback.encoder.version>
         <jsoup.version>1.15.3</jsoup.version>
+        <json.version>20230618</json.version>
         <sonar.coverage.exclusions>
             **/controller/**,
             **/dto/**,
@@ -60,6 +61,11 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
         </dependency>
     </dependencies>
 </project>

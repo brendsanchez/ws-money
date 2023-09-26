@@ -1,6 +1,6 @@
 package com.dusk.money.scraping;
 
-import com.dusk.money.dto.Price;
+import com.dusk.money.dto.response.Price;
 
 import java.util.List;
 

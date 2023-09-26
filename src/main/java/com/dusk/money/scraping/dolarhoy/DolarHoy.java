@@ -1,7 +1,7 @@
 package com.dusk.money.scraping.dolarhoy;
 
-import com.dusk.money.dto.Price;
 import com.dusk.money.dto.PriceVal;
+import com.dusk.money.dto.response.Price;
 import com.dusk.money.enums.SpecialCharacter;
 import com.dusk.money.scraping.Dollar;
 import com.dusk.money.scraping.DollarElement;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +32,15 @@ public class DolarHoy implements Dollar, DollarElement {
         String lastUpdated = this.lastUpdated();
 
         List<Price> prices = new ArrayList<>();
+        int cant = UtilMoney.CANT_INIT;
         for (Element child : children) {
             if (this.nonValidChild(child)) {
                 continue;
             }
 
-            Price price = this.getPriceFromChildWithUpdated(child, lastUpdated);
+            Price price = this.getPriceFromChildWithUpdated(cant, child, lastUpdated);
             prices.add(price);
+            cant++;
         }
         return prices;
     }
@@ -63,31 +64,21 @@ public class DolarHoy implements Dollar, DollarElement {
         return child.children().isEmpty() || child.children().size() < 2;
     }
 
-    private Price getPriceFromChildWithUpdated(Element element, String lastUpdated) {
+    private Price getPriceFromChildWithUpdated(int index, Element element, String lastUpdated) {
         String name = element.child(0).text();
         Elements priceElement = element.child(1).children();
         List<PriceVal> priceValues = this.priceValues(priceElement);
-        return new Price(name, lastUpdated, priceValues.getFirst(), priceValues.getLast());
+        return new Price(index, name, lastUpdated, priceValues.getFirst(), priceValues.getLast());
     }
 
     private List<PriceVal> priceValues(Elements valChildren) {
         List<PriceVal> priceValues = new ArrayList<>(2);
         for (Element element : valChildren) {
             String priceText = this.getPriceFromText(element.wholeText());
-            PriceVal priceVal = this.getPriceVal(priceText);
+            PriceVal priceVal = UtilMoney.getPriceVal(priceText);
             priceValues.add(priceVal);
         }
         return priceValues;
-    }
-
-    private PriceVal getPriceVal(String priceText) {
-        if (priceText.isEmpty()) {
-            return null;
-        }
-
-        String valText = SpecialCharacter.MONEY.getCharacter() + priceText;
-        BigDecimal val = new BigDecimal(priceText);
-        return new PriceVal(valText, val);
     }
 
     private String getPriceFromText(String text) {
