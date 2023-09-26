@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/money")
+@RequestMapping("/v1")
 public class DollarController {
 
     private final DollarService dollarService;
@@ -36,7 +36,7 @@ public class DollarController {
             @ApiResponse(responseCode = "500", useReturnTypeSchema = true, content = @Content(schema = @Schema(
                     example = "{\"code\": 500, \"message\": \"error intern\"}"))),
     })
-    @GetMapping
+    @GetMapping("/dollar")
     public MoneyResponse<List<Price>> getDollarPrices(@RequestParam("web") final Web web) {
         return this.dollarService.getDollarPrices(web);
     }
