@@ -25,7 +25,7 @@ import java.util.Locale;
 
 @Component
 public class DolarHoy implements Dollar, DollarElement {
-    private final SimpleDateFormat formatPage = new SimpleDateFormat("dd/MM/yy hh:mm a", Locale.ROOT);
+
     private Date lastUpdated;
 
     @Value("${url.dolarhoy}")
@@ -70,7 +70,8 @@ public class DolarHoy implements Dollar, DollarElement {
             return null;
         }
 
-        try { //todo esta devolviendo +3
+        try {
+            final SimpleDateFormat formatPage = new SimpleDateFormat("dd/MM/yy hh:mm a", Locale.ROOT);
             return formatPage.parse(lastUpdatedText);
         } catch (ParseException ex) {
             throw new GenericMoneyException(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
